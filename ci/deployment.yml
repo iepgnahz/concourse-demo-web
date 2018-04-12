@@ -19,7 +19,7 @@ spec:
         name: web
     spec:
       containers:
-        - image: 8da71b90.ngrok.io/web-nginx:latest
+        - image: d1c3733b.ngrok.io/web-nginx:latest
           name: web-container
           ports:
           - containerPort: 80 # ？各种port
