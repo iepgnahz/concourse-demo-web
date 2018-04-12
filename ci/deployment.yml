@@ -1,0 +1,45 @@
+---
+kind: Deployment
+apiVerison: apps/v1 # 必须是kube-api-server能够支持的，此值必须在kubectl apiversion中,可通过命令kubectl api-versions 查看
+metadata: # 包含的name等数据
+  name: web-deployment
+  labels:
+    name: web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate  # 指定新的Pod替换旧的Pod的策略
+  selector: # 指的是选出这个deployment要部署的pod的label，因此这个matchLabels必须包含.spec.template.metadata.labels的一个label
+    matchLabels:
+      name: web # 简单的说一个deployment可以同时部署多个pod，只要这些pod的label都被能被筛选出来
+  template:  # 代表pod的定义和pod的yaml用法完全一致
+    metadata:
+      name: web-pod
+      labels:
+        name: web
+    spec:
+      containers:
+        - image: 8da71b90.ngrok.io/web-nginx:latest
+          name: web-container
+          ports:
+          - containerPort: 80 # ？各种port
+---
+kind: Service
+apiVerison: v1
+metadata:
+  name: web-service
+spec:
+  selector:
+    name: web
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+
+
+
+
+
+
+
+

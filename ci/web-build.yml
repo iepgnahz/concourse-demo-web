@@ -1,0 +1,17 @@
+---
+platform: linux #必须存在
+image_resource:
+  type: docker-image
+  source:
+    repository: node
+    tag: 8.11.0-alpine
+inputs: # task并非可以直接拿到get到的resources 需要使用input resources将资源放到运行该task的容器中
+  - name: web-git-repo
+  - name: version
+run:
+  path: web-git-repo/ci/script.sh
+outputs:
+  - name: web-image
+
+
+

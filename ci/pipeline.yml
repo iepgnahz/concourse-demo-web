@@ -1,0 +1,58 @@
+---
+resources:
+  - name: web-git-repo
+    type: git
+    source:
+      uri: git@github.com:iepgnahz/concourse-demo-web.git
+      branch: master
+      private_key: ((git_private_key)) # 注意变量的写法必须如左边所示不能有空格
+      check_every: 1m
+  - name: version
+    type: semver
+    source:
+      driver: git
+      uri: git@github.com:iepgnahz/semver.git
+      branch: version
+      file: version/number   # 所有给定的file必须是一个路径
+      private_key: ((git_prive_key))
+  - name: docker-image
+    type: docker-image
+    source:
+      repository: 8da71b90.ngrok.io/web-nginx
+#  - name: kubernetes-staging
+#    type: kubernetes
+#    source:
+#      server: https://52.80.138.219:8080
+#      token: ((kubernetes-token))
+
+jobs:
+  - name: deploy-web
+    public: true
+    serial: true
+    plan:
+      - get: web-git-repo
+      - trigger: true
+      - get: version        # 如果get semver资源就可以吧semver 仓库clone到ws，这时候文件就存在了
+        params: {bump: patch}
+      - put: version
+        params: {file: version/number}  # 将自动生成的版本号push到version/number文件中
+      - task: build #所有的task运行前都启动一个新的容器，运行task，运行完毕之后rm这个容器
+        file: web-git-repo/ci/web-build.yml
+      - put: docker-image
+        params:
+          build: web-image
+          tag: version/number
+          tag_as_latest: true
+#      - put: kubernetes-staging
+#        params:
+#          kubectl: apply -f web-git-repo/ci/deployment.yml --record
+#          wait_until_ready: 0
+
+
+
+
+
+
+
+
+
