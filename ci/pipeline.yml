@@ -41,7 +41,7 @@ jobs:
       - put: docker-image
         params:
           build: web-image
-          tag: "latest"
+          tag: version/number
           tag_as_latest: true
       - put: kubernetes-staging
         params:
