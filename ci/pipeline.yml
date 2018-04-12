@@ -31,7 +31,7 @@ jobs:
     serial: true
     plan:
       - get: web-git-repo
-      - trigger: true
+        trigger: true
       - get: version        # 如果get semver资源就可以吧semver 仓库clone到ws，这时候文件就存在了
         params: {bump: patch}
       - put: version
