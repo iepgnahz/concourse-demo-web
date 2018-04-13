@@ -28,7 +28,7 @@ resources:
   - name: kubernetes-staging
     type: kubernetes
     source:
-      server: https://52.80.138.219:8080
+      server: https://52.80.138.219:6443
       token: ((kubernetes-token))
 
 jobs:
