@@ -18,7 +18,7 @@ resources:
   - name: docker-image
     type: docker-image
     source:
-      repository: d1c3733b.ngrok.io/web-nginx
+      repository: b7dc272e.ngrok.io/web-nginx
   - name: kubernetes-staging
     type: kubernetes
     source:
