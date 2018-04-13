@@ -1,4 +1,10 @@
 ---
+resource_types:
+- name: kubernetes
+  type: docker-image
+  source:
+    repository: zlabjp/kubernetes-resource
+    tag: "1.9"
 resources:
   - name: web-git-repo
     type: git
